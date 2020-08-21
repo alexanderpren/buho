@@ -6,7 +6,7 @@ import {
     SIGNOUT_USER,
     SIGNIN_USER,    
   
-  } from "constants/ActionTypes";
+  } from "../../src/constants/ActionTypes";
 
 export const showAuthMessage = (message) => {
     return {
@@ -28,6 +28,7 @@ export const showAuthMessage = (message) => {
   };
 
   export const userSignIn = (user) => {
+
     return {
       type: SIGNIN_USER,
       payload: user,

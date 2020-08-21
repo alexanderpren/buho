@@ -20,13 +20,13 @@ export default function configureStore(initialState) {
 
   sagaMiddleware.run(rootSaga);
 
-  if (module.hot) {
+  /* if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers/index', () => {
       const nextRootReducer = require('../reducers/index');
       store.replaceReducer(nextRootReducer);
     });
-  }
+  } */
   return store;
 }
 export {history};

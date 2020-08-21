@@ -1,16 +1,15 @@
-import {
-    HIDE_MESSAGE,   
+import {   
     SHOW_MESSAGE, 
     SIGNIN_USER_SUCCESS,
     SIGNOUT_USER_SUCCESS,  
-  } from "constants/ActionTypes";
+  } from "../constants/ActionTypes";
   
   const INIT_STATE = {
     loader: false,
     alertMessage: "",
     showMessage: false,
     initURL: "",
-    authUser: localStorage.getItem("user_id"),
+    authUser: null,
    
   };
   
@@ -41,14 +40,7 @@ import {
           loader: false,
         };
       }
-      case HIDE_MESSAGE: {
-        return {
-          ...state,
-          alertMessage: "",
-          showMessage: false,
-          loader: false,
-        };
-      }
+   
   
      
     
