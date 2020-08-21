@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,40 +6,45 @@ import {
   Link,
   Redirect,
   useHistory,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      store: "",
+    };
+  }
+  render() {
+    return (
+      <Router>
+        <div>
+          <AuthButton />
+          <ul>
+            <li>
+              <Link to="/public">Public Page</Link>
+            </li>
+            <li>
+              <Link to="/protected">Protected Page</Link>
+            </li>
+          </ul>
 
-
-export default function App() {
-  return (
-    <Router>
-      <div>
-        <AuthButton />
-
-        <ul>
-          <li>
-            <Link to="/public">Public Page</Link>
-          </li>
-          <li>
-            <Link to="/protected">Protected Page</Link>
-          </li>
-        </ul>
-
-        <Switch>
-          <Route path="/public">
-            <PublicPage />
-          </Route>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <PrivateRoute path="/protected">
-            <ProtectedPage />
-          </PrivateRoute>
-        </Switch>
-      </div>
-    </Router>
-  );
+          <Switch>
+            <Route path="/public">
+              <PublicPage />
+            </Route>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <PrivateRoute path="/protected">
+              <ProtectedPage />
+            </PrivateRoute>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
 const fakeAuth = {
@@ -51,7 +56,7 @@ const fakeAuth = {
   signout(cb) {
     fakeAuth.isAuthenticated = false;
     setTimeout(cb, 100);
-  }
+  },
 };
 
 function AuthButton() {
@@ -86,7 +91,7 @@ function PrivateRoute({ children, ...rest }) {
           <Redirect
             to={{
               pathname: "/login",
-              state: { from: location }
+              state: { from: location },
             }}
           />
         )
@@ -96,7 +101,7 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 function PublicPage() {
-  return <h3>Public</h3>;
+  return <h3>Publico</h3>;
 }
 
 function ProtectedPage() {
@@ -121,3 +126,5 @@ function LoginPage() {
     </div>
   );
 }
+
+export default connect(mapStateToProps, null)(App);
