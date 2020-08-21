@@ -1,247 +1,123 @@
-import React, { Component } from "react";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import URLSearchParams from "url-search-params";
-import MomentUtils from "@date-io/moment";
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
-import { IntlProvider } from "react-intl";
-import "assets/vendors/style";
-import indigoTheme from "./themes/indigoTheme";
-import cyanTheme from "./themes/cyanTheme";
-import orangeTheme from "./themes/orangeTheme";
-import amberTheme from "./themes/amberTheme";
-import pinkTheme from "./themes/pinkTheme";
-import blueTheme from "./themes/blueTheme";
-import purpleTheme from "./themes/purpleTheme";
-import greenTheme from "./themes/greenTheme";
-import darkTheme from "./themes/darkTheme";
-import AppLocale from "../lngProvider";
+import React from "react";
 import {
-  AMBER,
-  BLUE,
-  CYAN,
-  DARK_AMBER,
-  DARK_BLUE,
-  DARK_CYAN,
-  DARK_DEEP_ORANGE,
-  DARK_DEEP_PURPLE,
-  DARK_GREEN,
-  DARK_INDIGO,
-  DARK_PINK,
-  DEEP_ORANGE,
-  DEEP_PURPLE,
-  GREEN,
-  INDIGO,
-  PINK,
-} from "constants/ThemeColors";
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 
-import MainApp from "app/index";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import Store from "./Store";
-import { setInitUrl } from "../actions/Auth";
-import RTL from "util/RTL";
-import asyncComponent from "util/asyncComponent";
-import { setDarkTheme, setThemeColor } from "../actions/Setting";
 
-const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      authUser ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/signin",
-            state: { from: props.location },
-          }}
-        />
-      )
-    }
-  />
-);
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      store: "",
-    };
-  }
+export default function App() {
+  return (
+    <Router>
+      <div>
+        <AuthButton />
 
-  componentWillMount() {
-    window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-    if (this.props.initURL === "") {
-      this.props.setInitUrl(this.props.history.location.pathname);
-    }
-    const params = new URLSearchParams(this.props.location.search);
-    if (params.has("theme-name")) {
-      this.props.setThemeColor(params.get("theme-name"));
-    }
-    if (params.has("dark-theme")) {
-      this.props.setDarkTheme();
-    }
-  }
+        <ul>
+          <li>
+            <Link to="/public">Public Page</Link>
+          </li>
+          <li>
+            <Link to="/protected">Protected Page</Link>
+          </li>
+        </ul>
 
-  getColorTheme(themeColor, applyTheme) {
-    switch (themeColor) {
-      case INDIGO: {
-        applyTheme = createMuiTheme(indigoTheme);
-        break;
-      }
-      case CYAN: {
-        applyTheme = createMuiTheme(cyanTheme);
-        break;
-      }
-      case AMBER: {
-        applyTheme = createMuiTheme(amberTheme);
-        break;
-      }
-      case DEEP_ORANGE: {
-        applyTheme = createMuiTheme(orangeTheme);
-        break;
-      }
-      case PINK: {
-        applyTheme = createMuiTheme(pinkTheme);
-        break;
-      }
-      case BLUE: {
-        applyTheme = createMuiTheme(blueTheme);
-        break;
-      }
-      case DEEP_PURPLE: {
-        applyTheme = createMuiTheme(purpleTheme);
-        break;
-      }
-      case GREEN: {
-        applyTheme = createMuiTheme(greenTheme);
-        break;
-      }
-      case DARK_INDIGO: {
-        applyTheme = createMuiTheme({ ...indigoTheme, direction: "rtl" });
-        break;
-      }
-      case DARK_CYAN: {
-        applyTheme = createMuiTheme(cyanTheme);
-        break;
-      }
-      case DARK_AMBER: {
-        applyTheme = createMuiTheme(amberTheme);
-        break;
-      }
-      case DARK_DEEP_ORANGE: {
-        applyTheme = createMuiTheme(orangeTheme);
-        break;
-      }
-      case DARK_PINK: {
-        applyTheme = createMuiTheme(pinkTheme);
-        break;
-      }
-      case DARK_BLUE: {
-        applyTheme = createMuiTheme(blueTheme);
-        break;
-      }
-      case DARK_DEEP_PURPLE: {
-        applyTheme = createMuiTheme(purpleTheme);
-        break;
-      }
-      case DARK_GREEN: {
-        applyTheme = createMuiTheme(greenTheme);
-        break;
-      }
-      default:
-        createMuiTheme(indigoTheme);
-    }
-    return applyTheme;
-  }
-
-  render() {
-    const {
-      match,
-      location,
-      isDarkTheme,
-      locale,
-      authUser,
-      initURL,
-      isDirectionRTL,
-      store,
-    } = this.props;
-
-    let { themeColor } = this.props;
-    let applyTheme = createMuiTheme(indigoTheme);
-    if (isDarkTheme) {
-      document.body.classList.add("dark-theme");
-      applyTheme = createMuiTheme(darkTheme);
-    } else {
-      applyTheme = this.getColorTheme(themeColor, applyTheme);
-    }
-
-    if (store) {
-      if (store !== this.state.store) {
-        location.pathname = "/";
-        this.setState({ store: store });
-      }
-    }
-
-    if (location.pathname === "/") {
-      if (store === null) {
-        return <Redirect to={"/store"} />;
-      } else if (authUser === null) {
-        return <Redirect to={"/signin"} />;
-      } else if (initURL === "" || initURL === "/" || initURL === "/signin") {
-        return <Redirect to={"/app/dashboard/crypto"} />;
-      } else {
-        return <Redirect to={initURL} />;
-      }
-    }
-    if (isDirectionRTL) {
-      applyTheme.direction = "rtl";
-      document.body.classList.add("rtl");
-    } else {
-      document.body.classList.remove("rtl");
-      applyTheme.direction = "ltr";
-    }
-
-    const currentAppLocale = AppLocale[locale.locale];
-    return (
-      <ThemeProvider theme={applyTheme}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <IntlProvider
-            locale={currentAppLocale.locale}
-            messages={currentAppLocale.messages}
-          >
-            <RTL>
-              <div className="app-main">
-                <Switch>
-                  <RestrictedRoute
-                    path={`${match.url}app`}
-                    authUser={authUser}
-                    component={MainApp}
-                  />
-                  <Route path="/store" component={Store} />
-                  <Route path="/signin" component={SignIn} />
-                  <Route path="/signup" component={SignUp} />
-                  <Route
-                    component={asyncComponent(() =>
-                      import("app/routes/extraPages/routes/404")
-                    )}
-                  />
-                </Switch>
-              </div>
-            </RTL>
-          </IntlProvider>
-        </MuiPickersUtilsProvider>
-      </ThemeProvider>
-    );
-  }
+        <Switch>
+          <Route path="/public">
+            <PublicPage />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <PrivateRoute path="/protected">
+            <ProtectedPage />
+          </PrivateRoute>
+        </Switch>
+      </div>
+    </Router>
+  );
 }
 
-const mapStateToProps = () => {
- 
-  
+const fakeAuth = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    fakeAuth.isAuthenticated = true;
+    setTimeout(cb, 100); // fake async
+  },
+  signout(cb) {
+    fakeAuth.isAuthenticated = false;
+    setTimeout(cb, 100);
+  }
 };
 
-export default connect(mapStateToProps,)(App);
+function AuthButton() {
+  let history = useHistory();
+
+  return fakeAuth.isAuthenticated ? (
+    <p>
+      Welcome!{" "}
+      <button
+        onClick={() => {
+          fakeAuth.signout(() => history.push("/"));
+        }}
+      >
+        Sign out
+      </button>
+    </p>
+  ) : (
+    <p>You are not logged in.</p>
+  );
+}
+
+// A wrapper for <Route> that redirects to the login
+// screen if you're not yet authenticated.
+function PrivateRoute({ children, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        fakeAuth.isAuthenticated ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
+function PublicPage() {
+  return <h3>Public</h3>;
+}
+
+function ProtectedPage() {
+  return <h3>Protected</h3>;
+}
+
+function LoginPage() {
+  let history = useHistory();
+  let location = useLocation();
+
+  let { from } = location.state || { from: { pathname: "/" } };
+  let login = () => {
+    fakeAuth.authenticate(() => {
+      history.replace(from);
+    });
+  };
+
+  return (
+    <div>
+      <p>You must log in to view the page at {from.pathname}</p>
+      <button onClick={login}>Log in</button>
+    </div>
+  );
+}
