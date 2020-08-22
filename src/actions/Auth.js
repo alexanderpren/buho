@@ -4,7 +4,8 @@ import {
     SIGNIN_USER_SUCCESS,
     SIGNOUT_USER_SUCCESS,
     SIGNOUT_USER,
-    SIGNIN_USER,    
+    SIGNIN_USER,   
+    GET_POSTS, 
   
   } from "../../src/constants/ActionTypes";
 
@@ -36,7 +37,15 @@ export const showAuthMessage = (message) => {
   };
 
   export const userSignOut = () => {
+    debugger;
     return {
       type: SIGNOUT_USER,
+    };
+  };
+
+
+  export const getPosts = () => {
+       return {
+      type: GET_POSTS,
     };
   };

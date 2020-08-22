@@ -25,7 +25,7 @@ function* signInUserWithUsernamePassword({ payload }) {
     if (signInUser.message) {
       yield put(showAuthMessage(signInUser.message));
     } else {
-      localStorage.setItem("user_id", signInUser);
+      localStorage.setItem("user", signInUser.authUser.id);
       yield put(userSignInSuccess(signInUser));
     }
   } catch (error) {
@@ -35,8 +35,7 @@ function* signInUserWithUsernamePassword({ payload }) {
 
 function* signOut() {
   try {
-    localStorage.removeItem("user_id");
-
+    localStorage.removeItem("user");
     yield put(userSignOutSuccess(signOutUser));
   } catch (error) {
     yield put(showAuthMessage(error));

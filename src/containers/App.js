@@ -23,15 +23,13 @@ class App extends Component {
     };
   }
 
+
   render() {
     const { location, authUser } = this.props;
 
-    if (authUser) {
-      if (authUser !== this.state.authUser) {
-        location.pathname = "/";
-        this.setState({ authUser: authUser });
-      }
-    }
+    
+
+   
 
     if (location.pathname === "/") {
       if (authUser === null) {

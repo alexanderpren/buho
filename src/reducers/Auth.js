@@ -18,8 +18,8 @@ import {
       case SIGNIN_USER_SUCCESS: {
         return {
           ...state,
-          loader: false,
-          authUser: action.payload,
+          authUser: localStorage.getItem("user"),
+          loader: false,          
         };
       }
     
@@ -27,7 +27,7 @@ import {
         return {
           ...state,
           authUser: null,
-          initURL: "/app/dashboard/crypto",
+          initURL: "/",
           loader: false,
         };
       }

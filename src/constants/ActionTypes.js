@@ -7,6 +7,7 @@ export const SIGNOUT_USER = 'signout_user';
 export const SIGNOUT_USER_SUCCESS = 'signout_user_success';
 export const INIT_URL = 'init_url';
 export const SHOW_MESSAGE = 'show_message';
+export const GET_POSTS = 'get_posts'
 
 
 export const backendServer = 'http://localhost:3000/';
