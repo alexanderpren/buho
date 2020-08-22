@@ -9,12 +9,29 @@ import {
 
 import React, { Component } from "react";
 import SignIn from "./SignIn";
+import Welcome from "./Welcome";
+import PageError from "./PageError";
+
 
 
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      authUser: null,
+    };
+  }
+
   render() {
     const { location, authUser } = this.props;
+
+    if (authUser) {
+      if (authUser !== this.state.authUser) {
+        location.pathname = "/";
+        this.setState({ authUser: authUser });
+      }
+    }
 
     if (location.pathname === "/") {
       if (authUser === null) {
@@ -24,14 +41,19 @@ class App extends Component {
       }
     }
 
+   
     return (
-      <Router>
-        <div>
-          <Switch>
-            <Route path="/signin" component={SignIn} />
+      
+      <div className="app-main">
+       
+          <Switch>          
+            <Route exact path="/signin" component={SignIn} />   
+            <Route exact path="/welcome" component={Welcome} />   
+            <Route path="/" component={PageError} />  
+            <Route component={PageError} />       
           </Switch>
         </div>
-      </Router>
+      
     );
   }
 }

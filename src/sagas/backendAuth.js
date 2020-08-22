@@ -22,12 +22,10 @@ function* signInUserWithUsernamePassword({ payload }) {
       username,
       password
     );
-    debugger;
     if (signInUser.message) {
       yield put(showAuthMessage(signInUser.message));
     } else {
       localStorage.setItem("user_id", signInUser);
-
       yield put(userSignInSuccess(signInUser));
     }
   } catch (error) {
