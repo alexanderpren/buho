@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ButtonAppBar from "../components/ButtonAppBar";
-import Posts from "../components/Posts";
+import AlignItemsList from "../components/AlignItemsList";
 
 import { userSignIn, userSignOut,getPosts } from "../actions/Auth";
 
 class Welcome extends React.Component {
   render() {
     return (
-      <div className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
+      <div className="app-login-container ">
         <ButtonAppBar singOut={userSignOut} />
-        <Posts getPosts={getPosts} />
+        <AlignItemsList getPosts={getPosts} />
       </div>
     );
   }

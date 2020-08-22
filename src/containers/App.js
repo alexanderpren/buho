@@ -29,7 +29,12 @@ class App extends Component {
 
     
 
-   
+    if (authUser) {
+      if (authUser !== this.state.authUser) {
+        location.pathname = "/";
+       
+      }
+    }
 
     if (location.pathname === "/") {
       if (authUser === null) {
