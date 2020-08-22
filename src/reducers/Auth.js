@@ -1,7 +1,7 @@
 import {   
     SHOW_MESSAGE, 
-    SIGNIN_USER_SUCCESS,
-    SIGNOUT_USER_SUCCESS,  
+    LOGIN_USER_SUCCESS,
+    LOGOUT_USER_SUCCESS,  
   } from "../constants/ActionTypes";
   
   const INIT_STATE = {
@@ -15,18 +15,19 @@ import {
   
   export default (state = INIT_STATE, action) => {
     switch (action.type) {     
-      case SIGNIN_USER_SUCCESS: {
+      case LOGIN_USER_SUCCESS: {
         return {
           ...state,
-          authUser: localStorage.getItem("user"),
+          authUser: action.payload,
           loader: false,          
         };
       }
     
-      case SIGNOUT_USER_SUCCESS: {
+      case LOGOUT_USER_SUCCESS: {
+        debugger;
         return {
           ...state,
-          authUser: null,
+          authUser: "logout",
           initURL: "/",
           loader: false,
         };

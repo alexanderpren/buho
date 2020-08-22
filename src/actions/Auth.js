@@ -1,12 +1,11 @@
 
 import {    
     SHOW_MESSAGE,
-    SIGNIN_USER_SUCCESS,
-    SIGNOUT_USER_SUCCESS,
-    SIGNOUT_USER,
-    SIGNIN_USER,   
-    GET_POSTS, 
-  
+    LOGIN_USER_SUCCESS,
+    LOGOUT_USER_SUCCESS,
+    LOGOUT_USER,
+    LOGIN_USER,   
+    GET_POSTS,   
   } from "../../src/constants/ActionTypes";
 
 export const showAuthMessage = (message) => {
@@ -16,30 +15,29 @@ export const showAuthMessage = (message) => {
     };
   };
 
-  export const userSignInSuccess = (authUser) => {
+  export const userLoginSuccess = (authUser) => {
     return {
-      type: SIGNIN_USER_SUCCESS,
+      type: LOGIN_USER_SUCCESS,
       payload: authUser,
     };
   };
-  export const userSignOutSuccess = () => { 
+  export const userLogOutSuccess = () => { 
     return {
-      type: SIGNOUT_USER_SUCCESS,
+      type: LOGOUT_USER_SUCCESS,
     };
   };
 
-  export const userSignIn = (user) => {
+  export const userLogin = (user) => {
 
     return {
-      type: SIGNIN_USER,
+      type: LOGIN_USER,
       payload: user,
     };
   };
 
-  export const userSignOut = () => {
-    debugger;
+  export const userLogOut = () => {
     return {
-      type: SIGNOUT_USER,
+      type: LOGOUT_USER,
     };
   };
 

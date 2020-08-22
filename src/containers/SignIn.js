@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { userSignIn } from "../actions/Auth";
+import { userLogin } from "../actions/Auth";
 
 class SignIn extends React.Component {
   constructor() {
@@ -21,7 +21,7 @@ class SignIn extends React.Component {
       if (event.keyCode === 13) {
         const { username, password } = this.state;
         event.preventDefault();
-        this.props.userSignIn({ username, password });
+        this.props.userLogin({ username, password });
       }
     }
   }
@@ -72,7 +72,7 @@ class SignIn extends React.Component {
                       fullWidth
                       disableElevation
                       onClick={() => {
-                        this.props.userSignIn({ username, password });
+                        this.props.userLogin({ username, password });
                       }}
                       variant="contained"
                       color="primary"
@@ -98,5 +98,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  userSignIn
+  userLogin
 })(SignIn);

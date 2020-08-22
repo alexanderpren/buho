@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import ButtonAppBar from "../components/ButtonAppBar";
 import AlignItemsList from "../components/AlignItemsList";
 
-import { userSignIn, userSignOut,getPosts } from "../actions/Auth";
+import { userLogin,userLogOut,getPosts } from "../actions/Auth";
 
 class Welcome extends React.Component {
   render() {
     return (
       <div className="app-login-container ">
-        <ButtonAppBar singOut={userSignOut} />
+        <ButtonAppBar logOut={userLogOut} />
         <AlignItemsList getPosts={getPosts} />
       </div>
     );
@@ -22,5 +22,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  userSignIn, userSignOut, getPosts
+  userLogin,userLogOut, getPosts
 })(Welcome);

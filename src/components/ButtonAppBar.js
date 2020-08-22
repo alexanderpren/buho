@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar({singOut}) {
+export default function ButtonAppBar({logOut}) {
   const classes = useStyles();
 
   return (
@@ -32,7 +32,7 @@ export default function ButtonAppBar({singOut}) {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <Button color="inherit" onClick={singOut}>Logout</Button>
+          <Button color="inherit" onClick={logOut}>Logout</Button>
         </Toolbar>
       </AppBar>
     </div>

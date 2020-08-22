@@ -1,55 +1,55 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 import { auth } from "../../src/api/Auth";
-import { SIGNIN_USER, SIGNOUT_USER } from "../constants/ActionTypes";
+import { LOGIN_USER, LOGOUT_USER } from "../constants/ActionTypes";
 import {
   showAuthMessage,
-  userSignInSuccess,
-  userSignOutSuccess,
+  userLoginSuccess,
+  userLogOutSuccess,
 } from "../actions/Auth";
 
-const signInUserWithUsernamePasswordRequest = async (username, password) =>
+const logInUserWithUsernamePasswordRequest = async (username, password) =>
   await auth
     .signInWithUsernameAndPassword(username, password)
     .then((authUser) => authUser)
     .catch((error) => error);
 
-function* signInUserWithUsernamePassword({ payload }) {
+function* logInUserWithUsernamePassword({ payload }) {
   const { username, password } = payload;
   try {
-    const signInUser = yield call(
-      signInUserWithUsernamePasswordRequest,
+    const logInUser= yield call(
+      logInUserWithUsernamePasswordRequest,
       username,
       password
     );
-    if (signInUser.message) {
-      yield put(showAuthMessage(signInUser.message));
+    if (logInUser.message) {
+      yield put(showAuthMessage(logInUser.message));
     } else {
-      localStorage.setItem("user", signInUser.authUser.id);
-      yield put(userSignInSuccess(signInUser));
+      localStorage.setItem("userId", logInUser.authUser.id);
+      yield put(userLoginSuccess(logInUser.authUser.id));
     }
   } catch (error) {
     yield put(showAuthMessage(error));
   }
 }
 
-function* signOut() {
+function* logOut() {
   try {
-    localStorage.removeItem("user");
-    yield put(userSignOutSuccess(signOutUser));
+    localStorage.removeItem("userId");
+    yield put(userLogOutSuccess(logOutUser));
   } catch (error) {
     yield put(showAuthMessage(error));
   }
 }
 
-export function* signInUser() {
-  yield takeEvery(SIGNIN_USER, signInUserWithUsernamePassword);
+export function* logInUser() {
+  yield takeEvery(LOGIN_USER, logInUserWithUsernamePassword);
 }
 
-export function* signOutUser() {
-  yield takeEvery(SIGNOUT_USER, signOut);
+export function* logOutUser() {
+  yield takeEvery(LOGOUT_USER, logOut);
 }
 
 export default function* rootSaga() {
-  yield all([fork(signInUser), fork(signOutUser)]);
+  yield all([fork(logInUser), fork(logOutUser)]);
 }
