@@ -12,6 +12,7 @@ const INIT_STATE = {
   initURL: "",
   access: false,
   listPosts: null,
+  authUser: null,
 };
 
 export default (state = INIT_STATE, action) => {

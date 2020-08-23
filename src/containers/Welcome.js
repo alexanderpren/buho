@@ -11,13 +11,13 @@ class Welcome extends React.Component {
   }
 
   render() {
-    const { listPosts, userLogOut } = this.props;
+    const { listPosts, userLogOut, authUser } = this.props;
     return (
       <div className="app-login-container ">
         <ButtonAppBar logOut={userLogOut} />
 
         {listPosts ? (
-          <AlignItemsList listPosts={listPosts} />
+          <AlignItemsList listPosts={listPosts} userID={authUser}    />
         ) : (
           <span>No se encontraron posts.</span>
         )}

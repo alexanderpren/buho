@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,13 +26,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AlignItemsList({ listPosts }) {
+export default function AlignItemsList({ listPosts, userID }) {
   const classes = useStyles();
+
+  const userLocalStorageID = parseInt(localStorage.getItem("userId"));
 
   return (
     <List className={classes.root}>
       {listPosts ? (
         listPosts.map((post) => {
+          let buttonEnabled = false;
+          {
+            buttonEnabled =
+              post.EmployeeID === userLocalStorageID
+                ? (buttonEnabled = true)
+                : buttonEnabled;
+          }
+
           return (
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
@@ -54,13 +64,18 @@ export default function AlignItemsList({ listPosts }) {
                   </React.Fragment>
                 }
               />
-              <IconButton aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-              <IconButton aria-label="delete">
+              {buttonEnabled ? (
+                <IconButton aria-label="Delete" color="secondary">
+                  <DeleteIcon />
+                </IconButton>
+              ) : (
+                <IconButton disabled aria-label="Delete" color="primary">
+                  <DeleteIcon />
+                </IconButton>
+              )}
+              <IconButton aria-label="Comments">
                 <ChatBubbleIcon />
               </IconButton>
-
             </ListItem>
             /*  <Divider variant="inset" component="li" /> */
           );
