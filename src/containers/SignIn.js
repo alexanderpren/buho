@@ -30,11 +30,11 @@ class SignIn extends React.Component {
     const { username, password } = this.state;
     
     return (
-      <div className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
+      <div className="app-login-container ">
         <div className="app-login-main-content">
         
 
-          <div className="app-login-content">
+          <div className="col-md-4 col-md-offset-4">
             <div className="app-login-header mb-4">
               <h1>Login</h1>
             </div>

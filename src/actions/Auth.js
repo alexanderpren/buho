@@ -37,7 +37,7 @@ export const showAuthMessage = (message) => {
 
   export const userLogOut = () => {
     return {
-      type: LOGOUT_USER,
+      type: LOGOUT_USER,      
     };
   };
 

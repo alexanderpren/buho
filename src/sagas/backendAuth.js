@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 import { auth } from "../../src/api/Auth";
-import { LOGIN_USER, LOGOUT_USER } from "../constants/ActionTypes";
+import { LOGIN_USER, LOGOUT_USER, GET_POSTS } from "../constants/ActionTypes";
 import {
   showAuthMessage,
   userLoginSuccess,
@@ -33,10 +33,13 @@ function* logInUserWithUsernamePassword({ payload }) {
   }
 }
 
-function* logOut() {
+
+
+function* logOutSystem({payload}) {  
+
   try {
     localStorage.removeItem("userId");
-    yield put(userLogOutSuccess(logOutUser));
+    yield put(userLogOutSuccess());
   } catch (error) {
     yield put(showAuthMessage(error));
   }
@@ -47,9 +50,10 @@ export function* logInUser() {
 }
 
 export function* logOutUser() {
-  yield takeEvery(LOGOUT_USER, logOut);
+  yield takeEvery(LOGOUT_USER, logOutSystem);
 }
-
 export default function* rootSaga() {
-  yield all([fork(logInUser), fork(logOutUser)]);
+  yield all([
+    fork(logInUser),    
+    fork(logOutUser)]);
 }

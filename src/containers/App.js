@@ -16,30 +16,24 @@ class App extends Component {
     super();
     this.state = {
       authUserId: null,
+      acess: false,
     };
   }
 
   render() {
-    const { location, authUser, initURL } = this.props;
+    const { location, access } = this.props;
 
-    if (authUser) {
-      if (authUser !== this.state.authUserId) {
-        location.pathname = "/";
-        this.setState({ authUserId: authUser });
-      }
-    }
     const userLocalStorage = localStorage.getItem("userId");
 
-
-    if (location.pathname === "/") {
-      if (userLocalStorage === null) {
-        return <Redirect to={"/signin"} />;
-      } else {
+    if (userLocalStorage) {
+      if (userLocalStorage !== this.state.authUserId) {
+        this.setState({ authUserId: userLocalStorage, access: true });
         return <Redirect to={"/welcome"} />;
       }
-    }else{
-      if(initURL){
-        return <Redirect to={initURL} />;
+    } else {
+      if (access !== this.state.access) {
+        this.setState({ authUserId: userLocalStorage, access: false });
+        return <Redirect to={"/signin"} />;
       }
     }
 
@@ -57,9 +51,9 @@ class App extends Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { authUser, initURL } = auth;
+  const { access } = auth;
   return {
-    authUser,initURL
+    access,
   };
 };
 
