@@ -34,7 +34,7 @@ class SignIn extends React.Component {
         <div className="app-login-main-content">
         
 
-          <div className="col-md-4 col-md-offset-4">
+          <div className="col-md-6 col-md-offset-6">
             <div className="app-login-header mb-4">
               <h1>Login</h1>
             </div>
