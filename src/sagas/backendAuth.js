@@ -6,6 +6,7 @@ import {
   showAuthMessage,
   userLoginSuccess,
   userLogOutSuccess,
+  setListPostsSuccess
 } from "../actions/Auth";
 
 const logInUserWithUsernamePasswordRequest = async (username, password) =>
@@ -17,7 +18,7 @@ const logInUserWithUsernamePasswordRequest = async (username, password) =>
 function* logInUserWithUsernamePassword({ payload }) {
   const { username, password } = payload;
   try {
-    const logInUser= yield call(
+    const logInUser = yield call(
       logInUserWithUsernamePasswordRequest,
       username,
       password
@@ -33,10 +34,11 @@ function* logInUserWithUsernamePassword({ payload }) {
   }
 }
 
+export function* logInUser() {
+  yield takeEvery(LOGIN_USER, logInUserWithUsernamePassword);
+}
 
-
-function* logOutSystem({payload}) {  
-
+function* logOut() {
   try {
     localStorage.removeItem("userId");
     yield put(userLogOutSuccess());
@@ -45,15 +47,32 @@ function* logOutSystem({payload}) {
   }
 }
 
-export function* logInUser() {
-  yield takeEvery(LOGIN_USER, logInUserWithUsernamePassword);
+export function* logOutUser() {
+  yield takeEvery(LOGOUT_USER, logOut);
 }
 
-export function* logOutUser() {
-  yield takeEvery(LOGOUT_USER, logOutSystem);
+const getPostsRequest = async () =>
+  await auth
+    .getAllPostsFromAPI()
+    .then((listPostAll) => listPostAll)
+    .catch((error) => error);
+
+function* getPostFromAPI() {
+  try {
+    const listPosts = yield call(getPostsRequest);
+    if (listPosts.message) {
+      yield put(showAuthMessage(listPosts.message));
+    } else {     
+      yield put(setListPostsSuccess(listPosts));
+    }
+  } catch (error) {
+    yield put(showAuthMessage(error));
+  }
+}
+
+export function* getAllPosts() {
+  yield takeEvery(GET_POSTS, getPostFromAPI);
 }
 export default function* rootSaga() {
-  yield all([
-    fork(logInUser),    
-    fork(logOutUser)]);
+  yield all([fork(logInUser), fork(logOutUser), fork(getAllPosts)]);
 }

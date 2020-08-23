@@ -5,7 +5,8 @@ import {
     LOGOUT_USER_SUCCESS,
     LOGOUT_USER,
     LOGIN_USER,   
-    GET_POSTS,   
+    GET_POSTS,
+    POST_LIST_SUCCESS   
   } from "../../src/constants/ActionTypes";
 
 export const showAuthMessage = (message) => {
@@ -45,5 +46,14 @@ export const showAuthMessage = (message) => {
   export const getPosts = () => {
        return {
       type: GET_POSTS,
+    };
+  };
+  
+
+
+  export const setListPostsSuccess = (list) => { 
+    return {
+      type: POST_LIST_SUCCESS,
+      payload: list,
     };
   };

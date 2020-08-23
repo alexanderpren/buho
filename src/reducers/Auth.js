@@ -2,6 +2,7 @@ import {
   SHOW_MESSAGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER_SUCCESS,
+  POST_LIST_SUCCESS,
 } from "../constants/ActionTypes";
 
 const INIT_STATE = {
@@ -10,6 +11,7 @@ const INIT_STATE = {
   showMessage: false,
   initURL: "",
   access: false,
+  listPosts: null,
 };
 
 export default (state = INIT_STATE, action) => {
@@ -23,14 +25,15 @@ export default (state = INIT_STATE, action) => {
     }
 
     case LOGOUT_USER_SUCCESS: {
-      return {
-        ...state,
-        authUser: null,
-        initURL: "/",
-        access: false,
-      };
+      return INIT_STATE;
     }
 
+    case POST_LIST_SUCCESS: {
+      return {
+        ...state,
+        listPosts: action.payload.list,
+      };
+    }
     case SHOW_MESSAGE: {
       return {
         ...state,

@@ -8,6 +8,7 @@ export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_success';
 export const INIT_URL = 'init_url';
 export const SHOW_MESSAGE = 'show_message';
 export const GET_POSTS = 'get_posts'
+export const POST_LIST_SUCCESS = 'post_list_success'
 
 
 export const backendServer = 'http://localhost:3000/';
