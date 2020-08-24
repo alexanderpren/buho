@@ -55,11 +55,12 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-function Comments({ open, handleClose, idPost, getPostAndComents }) {
-  useEffect(() => {
-    getPostAndComents(idPost);
-  });
-
+function Comments({
+  open,
+  handleClose,
+  post,
+  comments,
+}) {
   return (
     <div>
       <Dialog
@@ -67,16 +68,17 @@ function Comments({ open, handleClose, idPost, getPostAndComents }) {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <DialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        ></DialogTitle>
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          {post.title}
+        </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </Typography>
+          {comments ? (
+            comments.map((comment) => {
+              return <Typography gutterBottom>{comment.body} </Typography>;
+            })
+          ) : (
+            <h1>Empty Comments</h1>
+          )}
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
@@ -88,12 +90,6 @@ function Comments({ open, handleClose, idPost, getPostAndComents }) {
   );
 }
 
-const mapStateToProps = ({ auth }) => {
-  const { post, comments } = auth;
-  return {
-    post,
-    comments,
-  };
-};
 
-export default connect(null, { getPostAndComents })(Comments);
+
+export default connect(null, null)(Comments);

@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import QuestionAlert from "./SweetAlert";
-import { deletePost } from "../actions/Auth";
+import { deletePost, getPostAndComents } from "../actions/Auth";
 import Comments from './Comments'
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AlignItemsList({ listPosts,deletePost }) {
+function AlignItemsList({ listPosts,deletePost, getPostAndComents, post, comments }) {
   const classes = useStyles();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
@@ -39,7 +39,8 @@ function AlignItemsList({ listPosts,deletePost }) {
 
   const handleOpenComments = (idPost) => (event) => {
     setOpen(true);
-    setpostID(idPost);
+    
+    getPostAndComents(idPost)
   };
 
   const handleClose = () => {
@@ -132,6 +133,8 @@ function AlignItemsList({ listPosts,deletePost }) {
           open={open}
           handleClose={handleClose}
           idPost={postID}
+          post={post}
+          comments= {comments}
             
           />
         )}</div>
@@ -140,7 +143,13 @@ function AlignItemsList({ listPosts,deletePost }) {
   );
 }
 
+const mapStateToProps = ({ auth }) => {
+  const { post, comments } = auth;
+  return {
+    post,
+    comments,
+  };
+};
 
 
-
-export default connect(null, { deletePost })(AlignItemsList);
+export default connect(mapStateToProps, { deletePost, getPostAndComents })(AlignItemsList);

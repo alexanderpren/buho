@@ -84,6 +84,6 @@ export const getPostAndComents = (id) => {
 export const postCommentSuccess = (post, comments) => {
   return {
     type: POST_COMMENTS_SUCCESS,
-    payload: {post:post.post, commments:comments.comments},
+    payload: {post:post.post, comments:comments.comments},
   };
 };
