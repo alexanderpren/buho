@@ -2,7 +2,7 @@ import {
   SHOW_MESSAGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER_SUCCESS,
-  POST_LIST_SUCCESS,
+  POST_LIST_SUCCESS,DELETE_POST_SUCCESS
 } from "../constants/ActionTypes";
 
 const INIT_STATE = {
@@ -27,6 +27,13 @@ export default (state = INIT_STATE, action) => {
 
     case LOGOUT_USER_SUCCESS: {
       return INIT_STATE;
+    }
+
+    case DELETE_POST_SUCCESS: {
+      return {
+        ...state,
+        listPosts: action.payload,
+      };
     }
 
     case POST_LIST_SUCCESS: {

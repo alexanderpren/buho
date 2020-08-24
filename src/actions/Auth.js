@@ -64,9 +64,9 @@ export const deletePost = (idDelete) => {
 
 
 
-export const deletePostSuccess = (response) => {
+export const deletePostSuccess = ({list}) => {
   return {
   type: DELETE_POST_SUCCESS,
-  payload: {list:response},
+  payload: list
   
 }};

@@ -80,16 +80,45 @@ export function* getAllPosts() {
   yield takeEvery(GET_POSTS, getPostFromAPI);
 }
 
+const deleteComments = async (id) =>
+  await auth
+    .deleteCommentsFromAPI(id)
+    .then((response) => response)
+    .catch((error) => error);
 
+const deletePosts = async (id) =>
+  await auth
+    .deletePostFromAPI(id)
+    .then((response) => response)
+    .catch((error) => error);
+
+function* deleteAll({ payload }) {
+  const { idDelete } = payload;
+  try {
+    const responseDelete = yield call(deletePosts, idDelete);
+
+    const responseDeleteComments = yield call(deleteComments, idDelete);
+
+    const listPosts = yield call(getPostsRequest);
+    if (listPosts.message) {
+      yield put(showAuthMessage(listPosts.message));
+    } else {
+      yield put(deletePostSuccess(listPosts));
+    }
+  } catch (error) {
+    yield put(showAuthMessage(error));
+  }
+}
 
 //Watchers
-export function* deletePost() {
-  yield takeEvery(DELETE_POST, deletePostFromAPI);
+export function* deletePostAndComments() {
+  yield takeEvery(DELETE_POST, deleteAll);
 }
 export default function* rootSaga() {
   yield all([
     fork(logInUser),
     fork(logOutUser),
-    fork(getAllPosts),   
+    fork(getAllPosts),
+    fork(deletePostAndComments),
   ]);
 }
