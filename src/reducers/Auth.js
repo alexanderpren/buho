@@ -2,10 +2,13 @@ import {
   SHOW_MESSAGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER_SUCCESS,
-  POST_LIST_SUCCESS,DELETE_POST_SUCCESS
+  POST_LIST_SUCCESS,DELETE_POST_SUCCESS,
+  POST_COMMENTS_SUCCESS
 } from "../constants/ActionTypes";
 
 const INIT_STATE = {
+  post: null,
+  comments: null,
   loader: false,
   alertMessage: "",
   showMessage: false,
@@ -48,6 +51,13 @@ export default (state = INIT_STATE, action) => {
         alertMessage: action.payload,
         showMessage: true,
         loader: false,
+      };
+    }
+    case POST_COMMENTS_SUCCESS: {
+      return {
+        ...state,
+        post: action.payload.post,
+        comments: action.payload.comments,
       };
     }
 

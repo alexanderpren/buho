@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import QuestionAlert from "./SweetAlert";
 import { deletePost } from "../actions/Auth";
+import Comments from './Comments'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,9 +31,21 @@ const useStyles = makeStyles((theme) => ({
 function AlignItemsList({ listPosts,deletePost }) {
   const classes = useStyles();
   const [showAlert, setShowAlert] = useState(false);
+  const [open, setOpen] = useState(false);
   const [postDeleteID, setPostDeleteID] = useState(null);
-
+  const [postID, setpostID] = useState(null);
   const userLocalStorageID = parseInt(localStorage.getItem("userId"));
+
+
+  const handleOpenComments = (idPost) => (event) => {
+    setOpen(true);
+    setpostID(idPost);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setpostID(null)
+  };
 
   const handleClickDelete = (idPost) => (event) => {
     setShowAlert(true);
@@ -90,7 +103,8 @@ function AlignItemsList({ listPosts,deletePost }) {
                 <DeleteIcon />
               </IconButton>
 
-              <IconButton aria-label="Comments">
+              <IconButton aria-label="Comments"  onClick={handleOpenComments(post.id)}>
+             
                 <ChatBubbleIcon />
               </IconButton>
             </ListItem>
@@ -110,7 +124,18 @@ function AlignItemsList({ listPosts,deletePost }) {
             question="Esta seguro de eliminar este post?"
           />
         )}
+        {" "}
+       
       </div>
+      <div> {open && (
+          <Comments
+          open={open}
+          handleClose={handleClose}
+          idPost={postID}
+            
+          />
+        )}</div>
+
     </List>
   );
 }

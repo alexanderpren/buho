@@ -64,9 +64,40 @@ const deleteCommentsFromAPI = (id) => {
     });
 };
 
+
+const getPostFromAPIBack = (id) => {
+  return axios
+    .get(urlAPIgetPost+id)
+    .then((Response) => {
+      return {
+        post: Response.data,
+        message: null,
+      };
+    })
+    .catch((Error) => {
+      return getErrorMessage(Error);
+    });
+};
+
+const getCommentsFromAPIBack = (id) => {
+  return axios
+    .get(urlAPIgetComments+"?"+id)
+    .then((Response) => {
+      return {
+        comments: Response.data,
+        message: null,
+      };
+    })
+    .catch((Error) => {
+      return getErrorMessage(Error);
+    });
+};
+
 export const auth = {
   signInWithUsernameAndPassword: signInWithUsernameAndPassword,
   getAllPostsFromAPI: getAllPostsFromAPI,
   deletePostFromAPI: deletePostFromAPI,
-  deleteCommentsFromAPI: deleteCommentsFromAPI
+  deleteCommentsFromAPI: deleteCommentsFromAPI,
+  getPostFromAPIBack: getPostFromAPIBack,
+  getCommentsFromAPIBack: getCommentsFromAPIBack
 };

@@ -8,6 +8,7 @@ import {
   POST_LIST_SUCCESS,
   DELETE_POST_SUCCESS,
   DELETE_POST,
+  GET_POSTS_AND_COMMENTS, POST_COMMENTS_SUCCESS
 } from "../../src/constants/ActionTypes";
 
 export const showAuthMessage = (message) => {
@@ -70,3 +71,19 @@ export const deletePostSuccess = ({list}) => {
   payload: list
   
 }};
+
+
+
+export const getPostAndComents = (id) => {
+  return {
+    type: GET_POSTS_AND_COMMENTS,
+    payload: {id:id},
+  };
+};
+
+export const postCommentSuccess = (post, comments) => {
+  return {
+    type: POST_COMMENTS_SUCCESS,
+    payload: {post:post.post, commments:comments.comments},
+  };
+};

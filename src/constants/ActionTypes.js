@@ -11,6 +11,8 @@ export const GET_POSTS = 'get_posts'
 export const POST_LIST_SUCCESS = 'post_list_success'
 export const DELETE_POST = 'delete_post'
 export const DELETE_POST_SUCCESS = 'delete_post_success'
+export const GET_POSTS_AND_COMMENTS = 'get_posts_and_comments'
+export const POST_COMMENTS_SUCCESS = 'post_comments_success'
 
 
 export const backendServer = 'http://localhost:3000/';

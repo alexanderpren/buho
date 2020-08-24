@@ -6,6 +6,7 @@ import {
   LOGOUT_USER,
   GET_POSTS,
   DELETE_POST,
+  GET_POSTS_AND_COMMENTS,
 } from "../constants/ActionTypes";
 import {
   showAuthMessage,
@@ -13,6 +14,7 @@ import {
   userLogOutSuccess,
   setListPostsSuccess,
   deletePostSuccess,
+  postCommentSuccess,
 } from "../actions/Auth";
 
 const logInUserWithUsernamePasswordRequest = async (username, password) =>
@@ -114,11 +116,43 @@ function* deleteAll({ payload }) {
 export function* deletePostAndComments() {
   yield takeEvery(DELETE_POST, deleteAll);
 }
+
+const getOnePostFromAPI = async (id) =>
+  await auth
+    .getPostFromAPIBack(id)
+    .then((response) => response)
+    .catch((error) => error);
+
+const getCommentsFromAPI = async (id) =>
+  await auth
+    .getCommentsFromAPIBack(id)
+    .then((response) => response)
+    .catch((error) => error);
+
+function* getPostAndComments({ payload }) {
+  const { id } = payload;
+  try {
+    const responsePost = yield call(getOnePostFromAPI, id);
+
+    const responseComments = yield call(getCommentsFromAPI, id);
+
+    yield put(postCommentSuccess(responsePost, responseComments));
+  } catch (error) {
+    yield put(showAuthMessage(error));
+  }
+}
+
+//Watchers
+export function* getPostAndAllComments() {
+  yield takeEvery(GET_POSTS_AND_COMMENTS, getPostAndComments);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(logInUser),
     fork(logOutUser),
     fork(getAllPosts),
     fork(deletePostAndComments),
+    fork(getPostAndAllComments),
   ]);
 }
