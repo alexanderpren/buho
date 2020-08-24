@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import QuestionAlert from "./SweetAlert";
+import { deletePost } from "../actions/Auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,25 +27,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AlignItemsList({ listPosts, userID }) {
+function AlignItemsList({ listPosts,deletePost }) {
   const classes = useStyles();
+  const [showAlert, setShowAlert] = useState(false);
+  const [postDeleteID, setPostDeleteID] = useState(null);
 
   const userLocalStorageID = parseInt(localStorage.getItem("userId"));
+
+  const handleClickDelete = (idPost) => (event) => {
+    setShowAlert(true);
+    setPostDeleteID(idPost);
+  };
+
+  const handleContinue = () => {
+    setShowAlert(false);
+  };
+
+  const handleAccept = () => {
+    setShowAlert(false);
+    setPostDeleteID(null);
+    deletePost(postDeleteID);
+  };
 
   return (
     <List className={classes.root}>
       {listPosts ? (
         listPosts.map((post) => {
-          let buttonEnabled = false;
+          let buttonEnabled = true;
           {
             buttonEnabled =
-              post.EmployeeID === userLocalStorageID
-                ? (buttonEnabled = true)
-                : buttonEnabled;
+              post.EmployeeID === userLocalStorageID ? false : buttonEnabled;
           }
+          let colorIcon = buttonEnabled ? "primary" : "secondary";
 
           return (
-            <ListItem alignItems="flex-start">
+            <ListItem key={post.id} alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </ListItemAvatar>
@@ -64,15 +81,15 @@ export default function AlignItemsList({ listPosts, userID }) {
                   </React.Fragment>
                 }
               />
-              {buttonEnabled ? (
-                <IconButton aria-label="Delete" color="secondary">
-                  <DeleteIcon />
-                </IconButton>
-              ) : (
-                <IconButton disabled aria-label="Delete" color="primary">
-                  <DeleteIcon />
-                </IconButton>
-              )}
+              <IconButton
+                disabled={buttonEnabled}
+                aria-label="Delete"
+                color={colorIcon}
+                onClick={handleClickDelete(post.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+
               <IconButton aria-label="Comments">
                 <ChatBubbleIcon />
               </IconButton>
@@ -83,6 +100,22 @@ export default function AlignItemsList({ listPosts, userID }) {
       ) : (
         <h1>Empty List</h1>
       )}
+      <div>
+        {" "}
+        {showAlert && (
+          <QuestionAlert
+            title="POST"
+            handleAccept={handleAccept}
+            handleContinue={handleContinue}
+            question="Esta seguro de eliminar este post?"
+          />
+        )}
+      </div>
     </List>
   );
 }
+
+
+
+
+export default connect(null, { deletePost })(AlignItemsList);

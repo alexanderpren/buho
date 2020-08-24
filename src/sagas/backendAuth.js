@@ -1,12 +1,18 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 import { auth } from "../../src/api/Auth";
-import { LOGIN_USER, LOGOUT_USER, GET_POSTS } from "../constants/ActionTypes";
+import {
+  LOGIN_USER,
+  LOGOUT_USER,
+  GET_POSTS,
+  DELETE_POST,
+} from "../constants/ActionTypes";
 import {
   showAuthMessage,
   userLoginSuccess,
   userLogOutSuccess,
-  setListPostsSuccess
+  setListPostsSuccess,
+  deletePostSuccess,
 } from "../actions/Auth";
 
 const logInUserWithUsernamePasswordRequest = async (username, password) =>
@@ -62,17 +68,28 @@ function* getPostFromAPI() {
     const listPosts = yield call(getPostsRequest);
     if (listPosts.message) {
       yield put(showAuthMessage(listPosts.message));
-    } else {     
+    } else {
       yield put(setListPostsSuccess(listPosts));
     }
   } catch (error) {
     yield put(showAuthMessage(error));
   }
 }
-
+//Watchers
 export function* getAllPosts() {
   yield takeEvery(GET_POSTS, getPostFromAPI);
 }
+
+
+
+//Watchers
+export function* deletePost() {
+  yield takeEvery(DELETE_POST, deletePostFromAPI);
+}
 export default function* rootSaga() {
-  yield all([fork(logInUser), fork(logOutUser), fork(getAllPosts)]);
+  yield all([
+    fork(logInUser),
+    fork(logOutUser),
+    fork(getAllPosts),   
+  ]);
 }

@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   render() {
-    const { location, access } = this.props;
+    const {  access } = this.props;
 
     const userLocalStorage = localStorage.getItem("userId");
 

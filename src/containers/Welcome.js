@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, {Component} from "react";
 import { connect } from "react-redux";
 import ButtonAppBar from "../components/ButtonAppBar";
 import AlignItemsList from "../components/AlignItemsList";
 
 import { userLogOut, getPosts } from "../actions/Auth";
 
-class Welcome extends React.Component {
+class Welcome extends Component {
   componentDidMount() {
     this.props.getPosts();
   }
 
   render() {
-    const { listPosts, userLogOut, authUser } = this.props;
+    const { listPosts, userLogOut } = this.props;
     return (
       <div className="app-login-container ">
         <ButtonAppBar logOut={userLogOut} />
-
         {listPosts ? (
-          <AlignItemsList listPosts={listPosts} userID={authUser}    />
+          <AlignItemsList listPosts={listPosts}     />
         ) : (
           <span>No se encontraron posts.</span>
         )}
@@ -33,5 +32,5 @@ const mapStateToProps = ({ auth }) => {
 
 export default connect(mapStateToProps, {
   userLogOut,
-  getPosts,
+  getPosts,  
 })(Welcome);
