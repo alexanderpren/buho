@@ -9,7 +9,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { getPostAndComents } from "../actions/Auth";
+
 
 const styles = (theme) => ({
   root: {
@@ -69,7 +69,7 @@ function Comments({
         open={open}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {post.title}
+          {post ? post.title:"Titulo"}
         </DialogTitle>
         <DialogContent dividers>
           {comments ? (
@@ -91,5 +91,13 @@ function Comments({
 }
 
 
+const mapStateToProps = ({ auth }) => {
+  const { post, comments } = auth;
+  return {
+    post,
+    comments,
+  };
+};
 
-export default connect(null, null)(Comments);
+
+export default connect(mapStateToProps, null)(Comments);
